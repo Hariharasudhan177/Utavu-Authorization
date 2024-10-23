@@ -25,6 +25,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: utavureg.azurecr.io  # Replace with your ACR name
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
