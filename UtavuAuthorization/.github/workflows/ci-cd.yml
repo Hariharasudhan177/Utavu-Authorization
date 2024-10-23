@@ -1,0 +1,53 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # For production
+      - dev    # For development
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: utavureg.azurecr.io  # Replace with your ACR name
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref }}  # Using the branch name as the tag
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Set this secret in your GitHub repository
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            echo "Deploying to Development"
+            az containerapp update --name utavuconauth \
+              --resource-group utavurg \
+              --image utavureg.azurecr.io/utavuauthorization:dev \
+              --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
+          fi
