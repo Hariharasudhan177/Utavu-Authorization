@@ -33,7 +33,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref }}  # Using the branch name as the tag
+          tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref_name }}  # Using the branch name as the tag
 
   deploy:
     runs-on: ubuntu-latest
