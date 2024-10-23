@@ -51,3 +51,4 @@ jobs:
               --image utavureg.azurecr.io/utavuauthorization:dev \
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
           fi
+          
