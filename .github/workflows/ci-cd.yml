@@ -31,7 +31,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: utavuauthorization/ .
           push: true
           tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref_name }}  # Using the branch name as the tag
 
