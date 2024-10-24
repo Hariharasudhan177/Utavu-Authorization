@@ -8,6 +8,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Load environment-specific appsettings file
+        builder.Configuration
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy("AllowAllOrigins", builder =>
@@ -28,7 +34,7 @@ public class Program
         builder.Services.AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
-        
+
         builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
