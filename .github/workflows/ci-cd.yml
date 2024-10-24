@@ -55,6 +55,7 @@ jobs:
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
           elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
             echo "Deploying to Test"
+            az containerapp update --name utavuconauthtest \
               --resource-group utavurg \
               --image utavureg.azurecr.io/utavuauthorization:test \
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
