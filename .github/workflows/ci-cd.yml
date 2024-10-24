@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main  # For production
-      - dev    # For development
+      - test    # For development
   pull_request:
     branches:
       - main
-      - dev
+      - test
 
 jobs:
   build:
@@ -47,11 +47,16 @@ jobs:
 
       - name: Deploy to Azure Container Apps
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
-            echo "Deploying to Development"
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Deploying to Production"
             az containerapp update --name utavuconauth \
               --resource-group utavurg \
-              --image utavureg.azurecr.io/utavuauthorization:dev \
+              --image utavureg.azurecr.io/utavuauthorization:prod \
+              --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
+          elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+            echo "Deploying to Test"
+              --resource-group utavurg \
+              --image utavureg.azurecr.io/utavuauthorization:test \
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
           fi
           
