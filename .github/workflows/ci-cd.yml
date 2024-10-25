@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # For production
+      - test    # For development
+  pull_request:
+    branches:
+      - main
+      - test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to ACR
+        uses: docker/login-action@v1
+        with:
+          registry: utavureg.azurecr.io  # Replace with your ACR name
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: UtavuAuthorization/
+          file: UtavuAuthorization/Dockerfile
+          push: true
+          tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref_name }}  # Using the branch name as the tag
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}  # Set this secret in your GitHub repository
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "Deploying to Production"
+            az containerapp update --name utavuconauth \
+              --resource-group utavurg \
+              --image utavureg.azurecr.io/utavuauthorization:prod \
+              --cpu 0.5 --memory 1.0Gi  
+          elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+            echo "Deploying to Test"
+            az containerapp update --name utavuconauthtest \
+              --resource-group utavurg \
+              --image utavureg.azurecr.io/utavuauthorization:test \
+              --cpu 0.5 --memory 1.0Gi \
+              --set-env-vars ASPNETCORE_ENVIRONMENT=Test
+          fi
+          
