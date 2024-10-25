@@ -1,0 +1,13 @@
+{
+    "properties": {
+      "configuration": {
+        "environments": [
+          {
+            "name": "ASPNETCORE_ENVIRONMENT",
+            "value": "Test"
+          }
+        ]
+      }
+    }
+  }
+  
