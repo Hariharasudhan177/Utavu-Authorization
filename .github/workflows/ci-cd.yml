@@ -59,6 +59,9 @@ jobs:
               --resource-group utavurg \
               --image utavureg.azurecr.io/utavuauthorization:test \
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
+            az containerapp env variable set \
+              --name utavuconauthtest \
+              --resource-group utavurg \
               --environment-variables ASPNETCORE_ENVIRONMENT=Test
           fi
           
