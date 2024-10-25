@@ -59,6 +59,6 @@ jobs:
               --resource-group utavurg \
               --image utavureg.azurecr.io/utavuauthorization:test \
               --cpu 0.5 --memory 1.0Gi  # Adjust these resources as needed
-            export ASPNETCORE_ENVIRONMENT=Test
+              --environment-variables ASPNETCORE_ENVIRONMENT=Test
           fi
           
