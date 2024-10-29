@@ -14,12 +14,12 @@ public class Program
         SecretClientOptions options = new SecretClientOptions()
         {
             Retry =
-        {
-            Delay= TimeSpan.FromSeconds(2),
-            MaxDelay = TimeSpan.FromSeconds(16),
-            MaxRetries = 5,
-            Mode = RetryMode.Exponential
-         }
+                {
+                    Delay= TimeSpan.FromSeconds(2),
+                    MaxDelay = TimeSpan.FromSeconds(16),
+                    MaxRetries = 5,
+                    Mode = RetryMode.Exponential
+                }
         };
         var client = new SecretClient(new Uri("https://utavukv.vault.azure.net/"), new DefaultAzureCredential(), options);
 
@@ -48,6 +48,7 @@ public class Program
         builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
         builder.Services.AddScoped<IJwtService, JwtService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<ILoginProcessor, LoginProcessor>();
 
         builder.Services.AddControllers();
 
