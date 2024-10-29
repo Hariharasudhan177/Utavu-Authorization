@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Logging;
 
 [ApiController]
 [Route("auth/[controller]")]
@@ -10,13 +11,15 @@ public class SignUpController : ControllerBase
     private readonly IJwtService _jwtService;
     private readonly IUserService _userService;
     private readonly ILoginProcessor _loginProcessor;
+    private readonly ILogger<SignUpController> _logger;
 
-    public SignUpController(IGoogleAuthService googleAuthService, IJwtService jwtService, IUserService userService, ILoginProcessor loginProcessor)
+    public SignUpController(ILogger<SignUpController> logger, IGoogleAuthService googleAuthService, IJwtService jwtService, IUserService userService, ILoginProcessor loginProcessor)
     {
         _googleAuthService = googleAuthService;
         _jwtService = jwtService;
         _userService = userService;
         _loginProcessor = loginProcessor;
+        _logger = logger;
     }
 
     [HttpPost(Name = "SignUp")]
@@ -34,6 +37,7 @@ public class SignUpController : ControllerBase
             }
 
             _loginProcessor.ProcessLogin(payload.Email);
+            _logger.LogInformation($"login processor");
 
             var response = new
             {

@@ -9,6 +9,7 @@ namespace UserManagement.Tests.UnitTests.Controllers
 {
     public class SignUpControllerTests
     {
+        private readonly Mock<ILogger<SignUpController>> _mockLogger;
         private readonly Mock<IGoogleAuthService> _mockGoogleAuthService;
         private readonly Mock<IJwtService> _mockJwtService;
         private readonly Mock<IUserService> _mockUserService;
@@ -17,13 +18,14 @@ namespace UserManagement.Tests.UnitTests.Controllers
 
         public SignUpControllerTests()
         {
+            _mockLogger = new Mock<ILogger<SignUpController>>();
             _mockGoogleAuthService = new Mock<IGoogleAuthService>();
             _mockJwtService = new Mock<IJwtService>();
             _mockUserService = new Mock<IUserService>();
             _mockLoginProcessor = new Mock<ILoginProcessor>();
 
             // Initialize the controller with mocked dependencies
-            _controller = new SignUpController(_mockGoogleAuthService.Object, _mockJwtService.Object, _mockUserService.Object, _mockLoginProcessor.Object);
+            _controller = new SignUpController(_mockLogger.Object, _mockGoogleAuthService.Object, _mockJwtService.Object, _mockUserService.Object, _mockLoginProcessor.Object);
         }
 
         [Fact]
