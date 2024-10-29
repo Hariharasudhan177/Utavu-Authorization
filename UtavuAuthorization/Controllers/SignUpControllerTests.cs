@@ -12,6 +12,7 @@ namespace UserManagement.Tests.UnitTests.Controllers
         private readonly Mock<IGoogleAuthService> _mockGoogleAuthService;
         private readonly Mock<IJwtService> _mockJwtService;
         private readonly Mock<IUserService> _mockUserService;
+        private readonly Mock<ILoginProcessor> _mockLoginProcessor;
         private readonly SignUpController _controller;
 
         public SignUpControllerTests()
@@ -19,9 +20,10 @@ namespace UserManagement.Tests.UnitTests.Controllers
             _mockGoogleAuthService = new Mock<IGoogleAuthService>();
             _mockJwtService = new Mock<IJwtService>();
             _mockUserService = new Mock<IUserService>();
+            _mockLoginProcessor = new Mock<ILoginProcessor>();
 
             // Initialize the controller with mocked dependencies
-            _controller = new SignUpController(_mockGoogleAuthService.Object, _mockJwtService.Object, _mockUserService.Object);
+            _controller = new SignUpController(_mockGoogleAuthService.Object, _mockJwtService.Object, _mockUserService.Object, _mockLoginProcessor.Object);
         }
 
         [Fact]
