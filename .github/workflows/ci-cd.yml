@@ -52,7 +52,7 @@ jobs:
             az containerapp update --name utavuconauth \
               --resource-group utavurg \
               --image utavureg.azurecr.io/utavuauthorization:main \
-              --cpu 0.5 --memory 1.5Gi  
+              --cpu 0.75 --memory 1.5Gi  
           elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
             echo "Deploying to Test"
             az containerapp update --name utavuconauthtest \
