@@ -51,7 +51,7 @@ jobs:
             echo "Deploying to Production"
             az containerapp update --name utavuconauth \
               --resource-group utavurg \
-              --image utavureg.azurecr.io/utavuauthorization:prod \
+              --image utavureg.azurecr.io/utavuauthorization:main \
               --cpu 0.5 --memory 1.0Gi  
           elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
             echo "Deploying to Test"
