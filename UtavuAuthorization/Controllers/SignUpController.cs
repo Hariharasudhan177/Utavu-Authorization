@@ -41,7 +41,7 @@ public class SignUpController : ControllerBase
 
             var response = new
             {
-                Email = "test@gmail.com",
+                Email = payload.Email,
                 Token = _jwtService.GenerateJwtToken(payload.Email)
             };
 

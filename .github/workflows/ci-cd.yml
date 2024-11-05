@@ -34,7 +34,7 @@ jobs:
           context: UtavuAuthorization/
           file: UtavuAuthorization/Dockerfile
           push: true
-          tags: utavureg.azurecr.io/utavuauthorization:dev  # Using the branch name as the tag
+          tags: utavureg.azurecr.io/utavuauthorization:${{ github.ref_name }}  # Using the branch name as the tag
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
             echo "Deploying to Production"
             az containerapp update --name utavuconauth \
               --resource-group utavurg \
-              --image utavureg.azurecr.io/utavuauthorization:dev \
+              --image utavureg.azurecr.io/utavuauthorization:main \
               --cpu 0.75 --memory 1.5Gi  
           elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
             echo "Deploying to Test"
