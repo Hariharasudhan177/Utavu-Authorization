@@ -58,6 +58,6 @@ jobs:
             az containerapp update --name utavuconauthtest \
               --resource-group utavurg \
               --image utavureg.azurecr.io/utavuauthorization:test \
-              --cpu 0.75 --memory 1.5Gi \
+              --cpu 0.75 --memory 1.5Gi 
           fi
           
